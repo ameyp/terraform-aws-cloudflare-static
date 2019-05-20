@@ -88,7 +88,7 @@ module "static-site" {
 # Build spec
 This should go into `buildspec.yml` in the root of your hugo source repository. This file tells the AWS CodeBuild step in the pipeline how to build your repository using hugo and what files should be uploaded to AWS S3.
 
-```
+```yaml
 version: 0.2
 
 phases:
