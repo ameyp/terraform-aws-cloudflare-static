@@ -81,15 +81,34 @@ module "static-site" {
   use_google_apps_email     = true
 
   // https://support.google.com/a/answer/183895
-  google_txt_verification   = "${var.google_txt_verification}"
+  google_txt_verification   = "google1234"
 }
+```
+
+# Build spec
+This should go into `buildspec.yml` in the root of your hugo source repository. This file tells the AWS CodeBuild step in the pipeline how to build your repository using hugo and what files should be uploaded to AWS S3.
+
+```
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - hugo -v
+
+artifacts:
+  type: zip
+  files:
+    - '**/*'
+  base-directory: 'public'
+  discard-paths: no
 ```
 
 # Best practices
 
 1. Although the template above is written with ease of use in mind, it's recommended that you don't put your secrets into the root file if you intend to check it into version control. Instead, declare variables in the file and create a `terraform.tfvars` file with the actual secrets. Guide here: https://learn.hashicorp.com/terraform/getting-started/variables.html
 2. For AWS, instead of using your root user, I recommend creating an IAM user with Administrator access specifically for use with Terraform. Once you're done applying the Terraform plan, you can delete the IAM user if desired. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
-3. Instead of storing your terraform state locally, pick one of the existing terraform [backends](https://www.terraform.io/docs/backends/config.html). If you choose the [S3 backend](https://www.terraform.io/docs/backends/types/s3.html) and create a backend named `my-terraform-state`, you would put the following block into your `root.tf` file and then run `terraform init`.
+3. Instead of storing your terraform state locally, pick one of the existing terraform [backends](https://www.terraform.io/docs/backends/config.html). If you choose the [S3 backend](https://www.terraform.io/docs/backends/types/s3.html) and create a bucket named `my-terraform-state`, you would put the following block into your `root.tf` file and then run `terraform init`.
 ```
 terraform {
   backend "s3" {
