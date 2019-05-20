@@ -109,7 +109,7 @@ artifacts:
 1. Although the template above is written with ease of use in mind, it's recommended that you don't put your secrets into the root file if you intend to check it into version control. Instead, declare variables in the file and create a `terraform.tfvars` file with the actual secrets. Guide here: https://learn.hashicorp.com/terraform/getting-started/variables.html
 2. For AWS, instead of using your root user, I recommend creating an IAM user with Administrator access specifically for use with Terraform. Once you're done applying the Terraform plan, you can delete the IAM user if desired. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
 3. Instead of storing your terraform state locally, pick one of the existing terraform [backends](https://www.terraform.io/docs/backends/config.html). If you choose the [S3 backend](https://www.terraform.io/docs/backends/types/s3.html) and create a bucket named `my-terraform-state`, you would put the following block into your `root.tf` file and then run `terraform init`.
-```
+```terraform
 terraform {
   backend "s3" {
     bucket = "my-terraform-state"
