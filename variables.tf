@@ -17,8 +17,6 @@ variable "github_source_repo_name" {}
 variable "github_source_repo_branch" {}
 variable "github_organization" {}
 
-variable "cloudflare_api_token" {}
-variable "cloudflare_email" {}
 variable "cloudflare_zone" {}
 
 variable "use_google_apps_email" {
